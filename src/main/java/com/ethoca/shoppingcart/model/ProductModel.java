@@ -19,6 +19,7 @@ public class ProductModel implements Serializable {
     private double price;
     private String thumbnailUrl;
     private String imageUrl;
+    private String desc_short;
     private String description;
     private String lang;
     private String publisher;
@@ -128,5 +129,13 @@ public class ProductModel implements Serializable {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public String getDesc_short() {
+        return desc_short;
+    }
+
+    public void setDesc_short(String desc_short) {
+        this.desc_short = desc_short;
     }
 }

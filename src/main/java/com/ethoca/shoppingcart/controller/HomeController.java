@@ -4,6 +4,7 @@ import com.ethoca.shoppingcart.model.ProductModel;
 import com.ethoca.shoppingcart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,8 +23,8 @@ public class HomeController {
 
     List<ProductModel> products;
 
-    @RequestMapping("/")
-    public String home(){
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String home(Model model){
 
         products = new ArrayList<ProductModel>();
         try
@@ -31,14 +32,12 @@ public class HomeController {
             products = productService.getAllProducts();
             if(products !=null && !products.isEmpty())
             {
-                System.out.println("Product size : "+ products.size());
+                model.addAttribute("books", products);
             }
         }catch (Exception e)
         {
             e.printStackTrace();
         }
-
-
         return "index";
     }
 

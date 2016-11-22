@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductBook> productBooks = new ArrayList<ProductBook>();
         try {
-            productBooks = productDao.findAll();
+            productBooks = productDao.findAllByOrderByTitleAsc();
             if(productBooks != null && !productBooks.isEmpty())
             {
                 productModels = new ArrayList<ProductModel>();

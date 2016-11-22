@@ -25,6 +25,7 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ResponseBody ProductModel getProductById(@PathVariable long id){
 

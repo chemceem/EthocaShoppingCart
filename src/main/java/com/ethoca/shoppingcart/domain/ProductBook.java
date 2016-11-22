@@ -23,7 +23,7 @@ public class ProductBook {
     private double price;
     private String thumbnailUrl;
     private String imageUrl;
-
+    private String desc_short;
     @Column(length = 1000)
     private String description;
     private String lang;
@@ -136,5 +136,13 @@ public class ProductBook {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public String getDesc_short() {
+        return desc_short;
+    }
+
+    public void setDesc_short(String desc_short) {
+        this.desc_short = desc_short;
     }
 }

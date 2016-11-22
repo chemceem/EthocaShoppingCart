@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface ProductDao extends CrudRepository<ProductBook, Long>{
 
-    public List<ProductBook> findAll();
+    public List<ProductBook> findAllByOrderByTitleAsc();
     public ProductBook findById(Long id);
 }
