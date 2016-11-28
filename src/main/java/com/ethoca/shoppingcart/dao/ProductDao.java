@@ -12,4 +12,5 @@ public interface ProductDao extends CrudRepository<ProductBook, Long>{
 
     public List<ProductBook> findAllByOrderByTitleAsc();
     public ProductBook findById(Long id);
+    public ProductBook save(ProductBook book);
 }

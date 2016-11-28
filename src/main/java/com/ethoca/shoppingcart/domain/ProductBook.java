@@ -23,8 +23,9 @@ public class ProductBook {
     private double price;
     private String thumbnailUrl;
     private String imageUrl;
+	@Column(length=1000)
     private String desc_short;
-    @Column(length = 1000)
+    @Column(length = 5000)
     private String description;
     private String lang;
     private String publisher;

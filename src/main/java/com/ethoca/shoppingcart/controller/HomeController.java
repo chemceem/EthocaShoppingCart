@@ -2,9 +2,11 @@ package com.ethoca.shoppingcart.controller;
 
 import com.ethoca.shoppingcart.model.ProductModel;
 import com.ethoca.shoppingcart.service.ProductService;
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +22,8 @@ public class HomeController {
 
     @Autowired
     ProductService productService;
+
+    ProductModel book;
 
     List<ProductModel> products;
 
@@ -39,18 +43,12 @@ public class HomeController {
             e.printStackTrace();
         }
         return "index";
+
     }
 
-    @RequestMapping(value = "/test")
-    public String test()
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test(Model model)
     {
         return "home";
-    }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView showUserSignUpPage()
-    {
-        //return new ModelAndView("signup", "signupform", );
-        return null;
     }
 }
