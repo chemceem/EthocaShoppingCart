@@ -1,38 +1,26 @@
 package com.ethoca.shoppingcart.model;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by Chemcee. M. C on 20-11-2016.
  */
 public class UserSignUpForm {
 
-    @NotEmpty
-    private String firstName;
-    @NotEmpty
-    private String lastName;
+    @NotNull
     @Email
     private String email;
 
+    @NotNull(message = "Password length must be greater than 6 characters.")
+    @Size(min=6)
     private String password;
+
+    @NotNull(message = "Password length must be greater than 6 characters.")
+    @Size(min=6)
     private String confirmPassword;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmail() {
         return email;
