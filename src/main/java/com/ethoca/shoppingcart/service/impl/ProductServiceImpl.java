@@ -1,12 +1,12 @@
-package com.ethoca.shoppingcart.service;
+package com.ethoca.shoppingcart.service.impl;
 
 import com.ethoca.shoppingcart.dao.ProductDao;
 import com.ethoca.shoppingcart.domain.ProductBook;
 import com.ethoca.shoppingcart.model.ProductModel;
+import com.ethoca.shoppingcart.service.ProductService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
 package com.ethoca.shoppingcart.controller;
 
+import com.ethoca.shoppingcart.model.CartModel;
 import com.ethoca.shoppingcart.model.ProductModel;
 import com.ethoca.shoppingcart.service.ProductService;
 import org.apache.log4j.Level;

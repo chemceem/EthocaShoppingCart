@@ -12,5 +12,4 @@ public class EthocaShoppingCartApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }
