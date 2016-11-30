@@ -5,6 +5,8 @@ package com.ethoca.shoppingcart.model;
  */
 public class AddressForm {
 
+    private String firstName;
+    private String lastName;
     private String addressLine1;
     private String addressLine2;
     private String city;
@@ -12,13 +14,34 @@ public class AddressForm {
     private String country;
     private String zip;
 
-    public AddressForm(String addressLine1, String addressLine2, String city, String state, String country, String zip) {
+    public AddressForm() {
+    }
+
+    public AddressForm(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String country, String zip) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.city = city;
         this.state = state;
         this.country = country;
         this.zip = zip;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddressLine1() {

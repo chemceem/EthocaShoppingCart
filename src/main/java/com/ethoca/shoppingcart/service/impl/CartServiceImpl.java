@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import java.util.List;
 public class CartServiceImpl implements CartService {
 
     final static Logger logger = Logger.getLogger(CartServiceImpl.class);
+
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     @Autowired
     CartDao cartDao;
@@ -73,20 +76,27 @@ public class CartServiceImpl implements CartService {
         try {
             cartItemModels = getAllCartItems();
 
-            for(CartItemModel cartItemModel: cartItemModels)
+            if(cartItemModels != null && !cartItemModels.isEmpty())
             {
-                subTotal+= cartItemModel.getTotalPrice();
+                for(CartItemModel cartItemModel: cartItemModels)
+                {
+                    subTotal+= cartItemModel.getTotalPrice();
+                }
+
+                taxAmount = subTotal * 0.135;       //assuming a tax percent of 13.5
+                totalWithTax = taxAmount + subTotal;
+
+                cartModel.setCartItems(cartItemModels);
+                cartModel.setSubTotal(Double.parseDouble(decimalFormat.format(subTotal)));
+                cartModel.setTaxAmount(Double.parseDouble(decimalFormat.format(taxAmount)));
+                cartModel.setTotalWithTax(Double.parseDouble(decimalFormat.format(totalWithTax)));
+
+                return cartModel;
+            } else
+            {
+                return null;
             }
 
-            taxAmount = subTotal * 0.135;       //assuming a tax percent of 13.5
-            totalWithTax = taxAmount + subTotal;
-
-            cartModel.setCartItems(cartItemModels);
-            cartModel.setSubTotal(subTotal);
-            cartModel.setTaxAmount(taxAmount);
-            cartModel.setTotalWithTax(totalWithTax);
-
-            return cartModel;
         }catch (Exception e)
         {
             logger.error("EXCEPTION in CartServiceImpl ---> getCartModel", e);

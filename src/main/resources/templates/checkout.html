@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Ethoca - Shopping Cart</title>
+
+    <link rel="icon"   type="image/x-icon" href="resources/static/images/favicon.png" />
+    <link type="text/css" th:href="@{../css/bootstrap.min.css}" rel="stylesheet" />
+    <link type="text/css" th:href="@{../css/ethoca.css}" rel="stylesheet" /> <!--href="../../static/css/ethoca.css"-->
+
+    <script th:src="@{../js/jquery.js}"></script> <!--src="../../static/js/jquery.js"-->
+    <script th:src="@{../js/bootstrap.min.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ethoca</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/test">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                <li><a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span>Cart</a></li>
+            </ul>
+
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<div class="container wrapper">
+    <div class="row cart-head">
+        <div class="container">
+            <div class="row">
+                <p></p>
+            </div>
+            <div class="row">
+                <div style="display: table; margin: auto;">
+                    <span class="step step_complete"> <a href="/cart" class="check-bc">Cart</a> <span class="step_line step_complete"> </span> <span class="step_line backline"> </span> </span>
+                    <span class="step step_complete"> <a href="#" class="check-bc">Checkout</a> <span class="step_line "> </span> <span class="step_line step_complete"> </span> </span>
+                    <span class="step_thankyou check-bc step_complete">Confirmation</span>
+                </div>
+            </div>
+            <div class="row">
+                <p></p>
+            </div>
+        </div>
+    </div>
+    <div class="row cart-body">
+        <div class="form-horizontal" >
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
+            <!--REVIEW ORDER-->
+            <div class="panel panel-info">
+                <div class="panel-heading">Review Order</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-sm-3 col-xs-3">
+                            <img class="img-responsive" src="//c1.staticflickr.com/1/466/19681864394_c332ae87df_t.jpg" />
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <div class="col-xs-12">Product name</div>
+                            <div class="col-xs-12"><small>Quantity:<span>1</span></small></div>
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-right">
+                            <h6><span>$</span>25.00</h6>
+                        </div>
+                    </div>
+                    <div class="form-group"><hr /></div>
+                    <div class="form-group">
+                        <div class="col-sm-3 col-xs-3">
+                            <img class="img-responsive" src="//c1.staticflickr.com/1/466/19681864394_c332ae87df_t.jpg" />
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <div class="col-xs-12">Product name</div>
+                            <div class="col-xs-12"><small>Quantity:<span>1</span></small></div>
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-right">
+                            <h6><span>$</span>25.00</h6>
+                        </div>
+                    </div>
+                    <div class="form-group"><hr /></div>
+                    <div class="form-group">
+                        <div class="col-sm-3 col-xs-3">
+                            <img class="img-responsive" src="//c1.staticflickr.com/1/466/19681864394_c332ae87df_t.jpg" />
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <div class="col-xs-12">Product name</div>
+                            <div class="col-xs-12"><small>Quantity:<span>2</span></small></div>
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-right">
+                            <h6><span>$</span>50.00</h6>
+                        </div>
+                    </div>
+                    <div class="form-group"><hr /></div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <strong>Subtotal</strong>
+                            <div class="pull-right"><span>$</span><span>200.00</span></div>
+                        </div>
+                        <div class="col-xs-12">
+                            <small>Shipping</small>
+                            <div class="pull-right"><span>-</span></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><hr /></div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <strong>Order Total</strong>
+                            <div class="pull-right"><span>$</span><span>150.00</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--REVIEW ORDER END-->
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
