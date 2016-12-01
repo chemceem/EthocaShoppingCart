@@ -5,10 +5,15 @@ import com.ethoca.shoppingcart.model.CartModel;
 import com.ethoca.shoppingcart.service.CartService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.validation.Valid;
 
 /**
  * Created by Chemcee. M. C on 29-11-2016.
@@ -42,7 +47,7 @@ public class CartController {
     }
 
     @RequestMapping(value="/cart/checkout", method = RequestMethod.GET)
-    private String returnCheckout(Model model)
+    private String showCheckout(Model model)
     {
         CartModel cartModel;
 
@@ -50,15 +55,35 @@ public class CartController {
         //if address, populate the address form with existing details
         //to do item
         AddressForm addressForm = new AddressForm();
+        addressForm.setAddress("temp address");
+        addressForm.setFirstName("chemcee");
+        addressForm.setLastName("cherian");
+        addressForm.setCountry("country");
         try {
             cartModel = cartService.getCartModel();
             model.addAttribute("addressForm", addressForm);
             model.addAttribute("cartModel", cartModel);
 
         }catch (Exception e){
-            logger.error("EXCEPTION in CartController ---> returnCheckout", e);
+            logger.error("EXCEPTION in CartController ---> showCheckout", e);
             model.addAttribute("checkoutError", "Error while processing. Try again later.");
         }
         return "checkout";
+    }
+
+    @RequestMapping(value = "/cart/checkout", method = RequestMethod.POST)
+    private String confirmCheckout(@Valid @ModelAttribute("addressForm") AddressForm addressForm, BindingResult result, Model model)
+    {
+        if(result.hasErrors())
+        {
+            if(cartModel != null )
+                model.addAttribute("cartModel", cartModel);
+            else
+                model.addAttribute("cartError", "Your shopping cart is empty.");
+
+            return "checkout";
+        }
+
+        return "redirect:/cart/checkout";
     }
 }

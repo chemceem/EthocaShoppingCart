@@ -1,31 +1,47 @@
 package com.ethoca.shoppingcart.model;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by Chemcee. M. C on 20-11-2016.
  */
 public class AddressForm {
 
+    @NotNull(message = "First Name required.")
     private String firstName;
+    @NotNull(message = "Last Name required.")
     private String lastName;
-    private String addressLine1;
+    @NotNull(message = "Address required.")
+    private String address;
     private String addressLine2;
+    @NotNull(message = "City required.")
     private String city;
     private String state;
     private String country;
     private String zip;
+    private String phoneNumber;
 
     public AddressForm() {
     }
 
-    public AddressForm(String firstName, String lastName, String addressLine1, String addressLine2, String city, String state, String country, String zip) {
+    public AddressForm(String firstName, String lastName, String address, String addressLine2, String city, String state, String country, String zip, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.addressLine1 = addressLine1;
+        this.address = address;
         this.addressLine2 = addressLine2;
         this.city = city;
         this.state = state;
         this.country = country;
         this.zip = zip;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -44,12 +60,12 @@ public class AddressForm {
         this.lastName = lastName;
     }
 
-    public String getAddressLine1() {
-        return addressLine1;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getAddressLine2() {
