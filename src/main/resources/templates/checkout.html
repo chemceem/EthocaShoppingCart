@@ -109,7 +109,7 @@
             <!--REVIEW ORDER END-->
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
-            <!--SHIPPING METHOD-->
+
             <form id="shippingAddress" role="form" method="post" th:object="${addressForm}" th:action="@{/cart/checkout}">
                 <div class="panel panel-info">
                     <div class="panel-heading">Address</div>
@@ -138,8 +138,11 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12"><strong>City:</strong></div>
-                            <div class="col-md-12">
+                            <!--<div class="col-md-12">
                                 <input type="text" class="form-control"th:field="*{city}" th:required="required"/>
+                            </div>-->
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" th:field="*{city}" th:required="required"/>
                             </div>
                         </div>
                         <div class="form-group">

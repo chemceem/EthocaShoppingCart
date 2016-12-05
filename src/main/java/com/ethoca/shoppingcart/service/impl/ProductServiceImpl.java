@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     ProductModel productModel;
 
     /*
-    Service layer, method to fetch all products
+    Service layer, method to get all products from the database
      */
     @Override
     public List<ProductModel> getAllProducts() {
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    //method to get a product based on the id
+    //method to get a single product based on the id
     @Override
     public ProductModel getOne(Long id) {
 
@@ -68,13 +68,14 @@ public class ProductServiceImpl implements ProductService {
             if(productBook != null)
             {
                 productModel = new ProductModel();
+                //Beanutils class is used to copy properties of entityObject to model object
                 BeanUtils.copyProperties(productModel, productBook);
                 return productModel;
             } else
                 return null;
 
         }catch (Exception e) {
-            logger.error("EXCEPTION in ProductServiceImpl --> getOne", e);
+            logger.error(Level.ERROR+ ": EXCEPTION in ProductServiceImpl --> getOne", e);
             return null;
         }
     }

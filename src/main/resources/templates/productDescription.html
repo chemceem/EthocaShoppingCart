@@ -6,11 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
     <link rel="icon"   type="image/x-icon" href="../../resources/static/images/favicon.png" />
 
     <link href="../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
     <link href="../static/css/ethoca.css" type="text/css" th:href="@{/css/ethoca.css}" rel="stylesheet" />
+
+    <script th:src="@{/js/jquery.js}"></script>
 
     <title>Ethoca Shopping Cart</title>
 </head>
@@ -63,25 +68,27 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-lg-6">
             <img th:src="@{${book.imageUrl}}" alt="book cover" class="image-responsive"/>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 col-lg-6">
             <h2 th:text="'$'+${book.price}"></h2>
             <h3>Description</h3>
             <p th:text="${book.description}"></p>
             <h3>Details</h3>
             <ul>
-                <li th:text="${book.publisher}"></li>
-                <li th:text="${book.pages}"></li>
-                <li th:text="${book.isbn}"></li>
+                <li th:text="'Publisher: '+${book.publisher}"></li>
+                <li th:text="'Pages: '+${book.pages}"></li>
+                <li th:text="'ISBN: '+${book.isbn}"></li>
             </ul>
             <div class="row">
-                <div class="col-xs-12 col-sm-4">
-                    <input min="1" class="form-control" type="number" id="itemQuantity" th:value="1"/></div>
+                <div class="col-xs-8 col-sm-2 col-md-2">
+                    <input min="1" class="form-control" type="number" id="itemQuantity" th:value="1"/>
+                </div>
                 <div class="col-xs-12 col-sm-6">
-                    <button type="button" class="btn btn-outline-primary" th:onclick="'pressistQunty()'" data-toggle="modal" data-target="#cartModal" >Add to Cart</button>
-                </div> <!--End of Button th:click="'alert(\'' + ${book.id} + '\');'" -->
+                    <!-- the id of product is passed to the function that executes an ajax post request-->
+                    <button type="button" id="btnAddToCart" class="btn btn-primary" th:onclick="'addToCart(\''+${book.id}+'\')'" data-toggle="modal" data-target="#cartModal" >Add to Cart</button>
+                </div>
                 <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -101,19 +108,34 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Continue Shopping</button>
-                                <button type="button" class="btn btn-primary">Check Out</button>
+                                <a role="button" class="btn btn-default" href="/">Continue Shopping</a>
+                                <a role="button" class="btn btn-primary" href="/cart">
+                                    View Cart <span class="glyphicon glyphicon-play"></span>
+                                </a>
+                                <!--<button type="button" class="btn btn-primary">Check Out</button>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <script>
-                function pressistQunty() {
-                    var qnty = $('#itemQuantity').val();
-                    var myModalTitle = $("#myModalLabel").text(qnty+" Items Are Added To Cart.");
+            <script type="text/javascript">
 
-                    $.cookie()
+                //ajax call to add item in the cart
+                function addToCart(bookid) {
+                    var quantity = $('#itemQuantity').val();
+
+                    $.ajax({
+                           url: "../cart/add/"+bookid+"/"+quantity,
+                           type: "POST",
+                           cache: false,
+                           async: false,
+                           success: function (message) {
+                               $("#myModalLabel").text(message);
+                           },
+                           error: function (message) {
+                               $("#myModalLabel").text(message);
+                           }
+                       });
                 }
             </script>
         </div>
@@ -135,7 +157,6 @@
 
 </div>
 
-<script th:src="@{/js/jquery.js}"></script> <!--src="../static/js/jquery.js" src="../static/js/bootstrap.min.js"-->
 <script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>

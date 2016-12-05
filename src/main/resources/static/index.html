@@ -138,9 +138,10 @@
     </footer>
 </div>
 <script>
+    //ajax to load product content
     var request = new XMLHttpRequest();
     var data;
-    request.open('GET', 'http://localhost:8081/home', true);
+    request.open('GET', 'http://localhost:8081/products', true);
     request.onreadystatechange = function() {
         if (this.readyState === 4) {
             if (this.status >= 200 && this.status < 400) {

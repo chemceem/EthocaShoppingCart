@@ -78,7 +78,7 @@
                     </div>
                 </td>
                 <td class="col-sm-1 col-md-1" style="text-align: center">
-                    <input type="number" class="form-control" th:value="${cartItem.productQty}" /> <!--th:value=${cartItem.productQty}-->
+                    <input min="1" type="number" class="form-control" th:value="${cartItem.productQty}" /> <!--th:value=${cartItem.productQty}-->
                 </td>
                 <td class="col-sm-1 col-md-1 text-center" th:text="${cartItem.productModel.price}"><strong></strong></td>
                 <td class="col-sm-1 col-md-1 text-center" th:text="${cartItem.totalPrice}"><strong></strong></td>
@@ -87,20 +87,6 @@
                         <span class="glyphicon glyphicon-remove"></span>Remove</button>
                 </td>
             </tr>
-            <!--<tr>
-                <td>   </td>
-                <td>   </td>
-                <td>   </td>
-                <td><h5>Subtotal</h5></td>
-                <td class="text-right"><h5 th:text="${cartModel.subTotal}"><strong></strong></h5></td>
-            </tr>
-            <tr>
-                <td>   </td>
-                <td>   </td>
-                <td>   </td>
-                <td><h5>HST</h5></td>
-                <td class="text-right"><h5 th:text="${cartModel.taxAmount}"><strong></strong></h5></td>
-            </tr>-->
             <tr>
                 <td>   </td>
                 <td>   </td>
@@ -113,9 +99,12 @@
                 <td>   </td>
                 <td>   </td>
                 <td>
-                    <button type="button" class="btn btn-default" >
-                        <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-                    </button>
+                    <a role="button" class="btn btn-default" href="/">
+                        Continue Shopping <span class="glyphicon glyphicon-play"></span>
+                    </a>
+                    <!--<button type="button" class="btn btn-default" >
+                        <span class="glyphicon glyphicon-shopping-cart" href="/"></span> Continue Shopping
+                    </button>-->
                 </td>
                 <td>
                     <a role="button" class="btn btn-success" href="/cart/checkout">

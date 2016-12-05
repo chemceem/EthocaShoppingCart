@@ -27,9 +27,9 @@ public class HomeController {
 
     List<ProductModel> products;
 
-    @CrossOrigin(origins = "http://localhost:8000")
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public @ResponseBody List<ProductModel> home(Model model){
+    //@CrossOrigin(origins = "http://localhost:8000")
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    public @ResponseBody List<ProductModel> GetAllProducts(Model model){
 
         products = new ArrayList<ProductModel>();
         try
@@ -44,6 +44,5 @@ public class HomeController {
             e.printStackTrace();
         }
         return products;
-
     }
 }
