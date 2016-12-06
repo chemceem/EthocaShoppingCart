@@ -1,10 +1,17 @@
 package com.ethoca.shoppingcart.model;
 
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
  * Created by Chemcee. M. C on 29-11-2016.
  */
+@Component
+//@Scope(value = "session" , proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CartModel
 {
     List<CartItemModel> cartItems;

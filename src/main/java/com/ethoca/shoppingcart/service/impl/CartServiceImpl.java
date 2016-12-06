@@ -1,7 +1,9 @@
 package com.ethoca.shoppingcart.service.impl;
 
 import com.ethoca.shoppingcart.dao.CartDao;
+import com.ethoca.shoppingcart.dao.ProductDao;
 import com.ethoca.shoppingcart.domain.CartItem;
+import com.ethoca.shoppingcart.domain.ProductBook;
 import com.ethoca.shoppingcart.model.CartItemModel;
 import com.ethoca.shoppingcart.model.CartModel;
 import com.ethoca.shoppingcart.model.ProductModel;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,19 +26,23 @@ public class CartServiceImpl implements CartService {
 
     final static Logger logger = Logger.getLogger(CartServiceImpl.class);
 
+    /* This format is used to append the decimal digits to two digits. */
     DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     @Autowired
     CartDao cartDao;
 
-    List<CartItemModel> cartItemModels;
+    @Autowired
+    ProductDao productDao;
+
     CartModel cartModel;
+    List<CartItemModel> cartItemModels;
 
     //get the list of all the items in the cart
     @Override
     public List<CartItemModel> getAllCartItems() {
 
-        List<CartItem> cartItems = new ArrayList<CartItem>();
+        List<CartItem> cartItems;
         try
         {
             cartItems = cartDao.findAll();
@@ -57,8 +64,10 @@ public class CartServiceImpl implements CartService {
 
                     cartItemModels.add(cartItemModel);
                 }
-            }
             return cartItemModels;
+            } else {
+                return null;
+            }
         }catch (Exception e)
         {
             logger.error("EXCEPTION in CartServiceImpl ---> getAllCartItems", e);
@@ -71,11 +80,10 @@ public class CartServiceImpl implements CartService {
     public CartModel getCartModel() {
 
         cartModel = new CartModel();
-
         double taxAmount, subTotal = 0.0, totalWithTax;
-        try {
-            cartItemModels = getAllCartItems();
 
+        try {
+            getAllCartItems();
             if(cartItemModels != null && !cartItemModels.isEmpty())
             {
                 for(CartItemModel cartItemModel: cartItemModels)
@@ -96,11 +104,82 @@ public class CartServiceImpl implements CartService {
             {
                 return null;
             }
-
         }catch (Exception e)
         {
             logger.error("EXCEPTION in CartServiceImpl ---> getCartModel", e);
             return null;
         }
     }
+
+    /*
+     * Service layer, add product to cart.
+     * Returns true if product was successfully added, else return false
+     */
+    @Override
+    public boolean addToCart(ProductModel productModel, int quantity)
+    {
+        logger.info("inside CartServiceImpl ---> addToCart()");
+
+        CartItem cartItem;
+        ProductBook productBook;
+
+        try {
+            productBook = productDao.findById(productModel.getId());
+            if(productBook != null)
+            {
+                //check if the product already exist in the cart table
+                cartItem = cartDao.findByProductBook(productBook);
+
+                /*
+                 * if product already exist in the cart table,
+                 * the quantity is updated by adding new quantity to existing quantity                 *
+                 */
+                if(cartItem != null)
+                {
+                    int updatedQuantity = quantity + cartItem.getQuantity();
+                    double price = updatedQuantity * productBook.getPrice();
+
+                    cartItem.setQuantity(updatedQuantity);
+                    cartItem.setTotalPrice(price);
+                    cartItem.setDate(new Date());
+
+                    cartDao.save(cartItem);
+                    return true;
+                } else {
+                    double price = quantity * productBook.getPrice();
+
+                    cartItem = new CartItem();
+                    cartItem.setProductBook(productBook);
+                    cartItem.setQuantity(quantity);
+                    cartItem.setTotalPrice(price);
+                    cartItem.setDate(new Date());
+
+                    cartDao.save(cartItem);
+                    return true;
+                }
+            } else
+                return false;
+        }catch (Exception e) {
+            logger.error("Exception in CartServiceImpl ---> addToCart", e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateCart(ProductModel productModel, int quantity)
+    {
+        try {
+            return true;
+        }catch (Exception e) {
+            logger.error("Exception in CartServiceImpl ---> updateCart ", e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean removeFromCart(ProductModel productModel)
+    {
+        return false;
+    }
+
 }

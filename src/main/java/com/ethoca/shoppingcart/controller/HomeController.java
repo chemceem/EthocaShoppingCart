@@ -1,14 +1,13 @@
 package com.ethoca.shoppingcart.controller;
 
-import com.ethoca.shoppingcart.model.CartModel;
 import com.ethoca.shoppingcart.model.ProductModel;
 import com.ethoca.shoppingcart.service.ProductService;
-import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +15,15 @@ import java.util.List;
 /**
  * Created by Chemcee. M. C on 18-11-2016.
  */
-
 @RestController
 public class HomeController {
 
     @Autowired
     ProductService productService;
 
-    ProductModel book;
-
     List<ProductModel> products;
 
-    //@CrossOrigin(origins = "http://localhost:8000")
+    //@CrossOrigin(origins = "http://localhost:8081")
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public @ResponseBody List<ProductModel> GetAllProducts(Model model){
 
