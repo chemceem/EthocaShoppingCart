@@ -29,17 +29,6 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="/test">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -79,7 +68,7 @@
                 <td class="col-sm-1 col-md-1 col-lg-1" style="text-align: center">
                     <input min="1" type="number" th:id="${cartItem.productModel.id}" class="form-control" th:value="${cartItem.productQty}" th:onchange="'changeQuantity(\''+${cartItem.productModel.id}+'\')'"/> <!--th:value=${cartItem.productQty}-->
                 </td>
-                <td class="col-sm-1 col-md-1 text-center" th:text="${cartItem.productModel.price}"><strong></strong></td>
+                <td class="col-sm-1 col-md-1 text-center" th:text="'$'+${cartItem.productModel.price}"><strong></strong></td>
                 <td class="col-sm-1 col-md-1">
                     <a role="button" class="btn btn-danger" th:href="@{'/cart/remove/'+${cartItem.productModel.id}}"><span class="glyphicon glyphicon-remove"></span>Remove</a>
                 </td>
@@ -87,7 +76,7 @@
             <tr>
                 <td>   </td>
                 <td><h3>SubTotal</h3></td>
-                <td class="text-right"><h3 id="subTotal" th:text="${cartModel.subTotal}" ><strong></strong></h3></td>
+                <td class="text-right"><h3 id="subTotal" th:text="'$'+${cartModel.subTotal}" ><strong></strong></h3></td>
             </tr>
             <tr>
                 <td>   </td>
@@ -127,7 +116,7 @@
             cache: false,
             async: false,
             success: function (subtotal) {
-                $("#subTotal").text(subtotal)
+                $("#subTotal").text('$'+subtotal)
             }
         });
     }
