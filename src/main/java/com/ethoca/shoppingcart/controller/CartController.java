@@ -38,6 +38,9 @@ public class CartController {
     HttpServletRequest request;
     HttpSession session;
 
+    /**
+     * Returns the current cart of the user.
+     */
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     private String returnCurrentCart(Model model)
     {
@@ -52,7 +55,7 @@ public class CartController {
                 model.addAttribute("cartError", "Your shopping cart is empty.");
         }catch (Exception e)
         {
-            e.printStackTrace();
+            logger.error("EXEPCTION while fetching cart: CartController ----> returnCurrentCart", e);
             model.addAttribute("error", "Error while processing cart. Please try again later.");
         }
         return "cart";
@@ -86,16 +89,37 @@ public class CartController {
         }
     }
 
-    @RequestMapping(value = "/cart/remove/{bookid}", method = RequestMethod.POST)
-    private @ResponseBody String removeItemsFromCart(Model model)
+    /* update the quantity of an item in the cart*/
+    @RequestMapping(value = "/cart/update/{bookid}/{quantity}", method = RequestMethod.POST)
+    private @ResponseBody String updateCartQuantity(@PathVariable long bookid, @PathVariable int quantity, Model model)
     {
-        try {
+        String subTotal;
+        try{
+           subTotal = cartService.updateCart(bookid, quantity);
+        }catch (Exception e) {
+            model.addAttribute("error", "Error while processing cart. Please try again later.");
+            subTotal = null;
+        }
+        return subTotal;
+    }
 
-            return "";
+    /* Request to remove an item from the cart*/
+    @RequestMapping(value = "/cart/remove/{bookid}", method = RequestMethod.GET)
+    private String removeItemsFromCart(@PathVariable long bookid, Model model)
+    {
+
+        try {
+            if(cartService.removeFromCart(bookid))
+            {
+                return "redirect:/cart";
+            } else {
+                logger.info("Unable to remove item from cart : ---> CartServiceImpl ---> removeItemsFromCart");
+            }
         }catch (Exception e) {
             e.printStackTrace();
-            return "Error while removing item. Try again later";
+            logger.error("Error while remove items from cart --> CartServiceImpl --> removeItemsFromCart",e);
         }
+        return "redirect:/cart";
     }
 
      /*  Continue to checkout page.
@@ -107,7 +131,6 @@ public class CartController {
     {
         //check if the logged in user has an address already,
         //if address, populate the address form with existing details
-        //to do item
         AddressForm addressForm = new AddressForm();
         try {
             cartModel = cartService.getCartModel();
@@ -123,6 +146,7 @@ public class CartController {
 
     /*
         Confirming the order at the checkout
+        Creates the order and saves the details
      */
     @RequestMapping(value = "/cart/checkout", method = RequestMethod.POST)
     private String confirmCheckout(@Valid @ModelAttribute("addressForm") AddressForm addressForm, BindingResult result, Model model)
@@ -135,8 +159,16 @@ public class CartController {
                 model.addAttribute("cartError", "Your shopping cart is empty.");
 
             return "checkout";
+        } else {
+              try{
+                  //move the items in the cart to order details, create the order
+                  cartService.confirmOrder();
+                  return "orderConfirmation";
+              }catch (Exception e) {
+                  e.printStackTrace();
+                  return "redirect:/cart/checkout";
+              }
         }
-
-        return "redirect:/cart/checkout";
+        //return "redirect:/cart/checkout";
     }
 }

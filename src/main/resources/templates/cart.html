@@ -12,7 +12,7 @@
     <link href="../static/css/ethoca.css" type="text/css" th:href="@{css/ethoca.css}" rel="stylesheet" />
 
     <script src="../static/js/jquery.js" th:src="@{js/jquery.js}"></script>
-    <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -62,7 +62,6 @@
                 <th>Product</th>
                 <th>Quantity</th>
                 <th class="text-center">Price</th>
-                <th class="text-center">Total</th>
                 <th> </th>
             </tr>
             </thead>
@@ -77,34 +76,25 @@
                     </div>
                     </div>
                 </td>
-                <td class="col-sm-1 col-md-1" style="text-align: center">
-                    <input min="1" type="number" class="form-control" th:value="${cartItem.productQty}" /> <!--th:value=${cartItem.productQty}-->
+                <td class="col-sm-1 col-md-1 col-lg-1" style="text-align: center">
+                    <input min="1" type="number" th:id="${cartItem.productModel.id}" class="form-control" th:value="${cartItem.productQty}" th:onchange="'changeQuantity(\''+${cartItem.productModel.id}+'\')'"/> <!--th:value=${cartItem.productQty}-->
                 </td>
                 <td class="col-sm-1 col-md-1 text-center" th:text="${cartItem.productModel.price}"><strong></strong></td>
-                <td class="col-sm-1 col-md-1 text-center" th:text="${cartItem.totalPrice}"><strong></strong></td>
                 <td class="col-sm-1 col-md-1">
-                    <button type="button" class="btn btn-danger">
-                        <span class="glyphicon glyphicon-remove"></span>Remove</button>
+                    <a role="button" class="btn btn-danger" th:href="@{'/cart/remove/'+${cartItem.productModel.id}}"><span class="glyphicon glyphicon-remove"></span>Remove</a>
                 </td>
             </tr>
             <tr>
                 <td>   </td>
-                <td>   </td>
-                <td>   </td>
                 <td><h3>SubTotal</h3></td>
-                <td class="text-right"><h3 th:text="${cartModel.subTotal}"><strong></strong></h3></td>
+                <td class="text-right"><h3 id="subTotal" th:text="${cartModel.subTotal}" ><strong></strong></h3></td>
             </tr>
             <tr>
-                <td>   </td>
-                <td>   </td>
                 <td>   </td>
                 <td>
                     <a role="button" class="btn btn-default" href="/">
                         Continue Shopping <span class="glyphicon glyphicon-play"></span>
                     </a>
-                    <!--<button type="button" class="btn btn-default" >
-                        <span class="glyphicon glyphicon-shopping-cart" href="/"></span> Continue Shopping
-                    </button>-->
                 </td>
                 <td>
                     <a role="button" class="btn btn-success" href="/cart/checkout">
@@ -120,6 +110,28 @@
             <h2 th:text="${cartError}" class="text-center"></h2>
         </div>
     </div>
+
+    <div th:fragment="testFragment" id="" class="row">
+
+    </div>
 </div>
+<script type="text/javascript">
+    function changeQuantity(productId){
+
+        var quantity = $('#'+productId).val();
+        var url = "../cart/update/"+productId+"/"+quantity;
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            cache: false,
+            async: false,
+            success: function (subtotal) {
+                $("#subTotal").text(subtotal)
+            }
+        });
+    }
+</script>
+<script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
 </body>
 </html>

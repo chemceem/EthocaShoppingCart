@@ -115,7 +115,7 @@
 
                 <div class="row">{{#each this}}<div class="col-sm-4 col-lg-4 col-md-4">
                     <div class="card"> <img src={{this.thumbnailUrl}}alt="" class="card-img-top img-fluid"/>
-                        <h3><a href='../book/{{this.id}}' class="card-title">{{this.title}}</a></h3>
+                        <h3><a href='../products/{{this.id}}' class="card-title">{{this.title}}</a></h3>
                         <h5>{{this.author}}</h5> <h5 class="card-">${{this.price}}</h5>
                         <br/><br/>
                     </div>
@@ -141,7 +141,7 @@
     //ajax to load product content
     var request = new XMLHttpRequest();
     var data;
-    request.open('GET', 'http://localhost:8081/products', true);
+    request.open('GET', 'http://localhost:8081/products/all', true);
     request.onreadystatechange = function() {
         if (this.readyState === 4) {
             if (this.status >= 200 && this.status < 400) {
@@ -150,9 +150,9 @@
                 //console.log(data);
                 var source = $("#entry-template").html();
                 var template = Handlebars.compile(source);
-                var result = template(data);
                 $('#books').append(template(data));
-                //console.log(result);
+
+                //sort books based on category. client side.
                 $("#allBooks").click(function(){
                     $('#books').empty();
                     $('#books').append(template(data));

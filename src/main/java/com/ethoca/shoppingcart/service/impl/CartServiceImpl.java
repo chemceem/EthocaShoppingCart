@@ -3,6 +3,7 @@ package com.ethoca.shoppingcart.service.impl;
 import com.ethoca.shoppingcart.dao.CartDao;
 import com.ethoca.shoppingcart.dao.ProductDao;
 import com.ethoca.shoppingcart.domain.CartItem;
+import com.ethoca.shoppingcart.domain.OrderDetails;
 import com.ethoca.shoppingcart.domain.ProductBook;
 import com.ethoca.shoppingcart.model.CartItemModel;
 import com.ethoca.shoppingcart.model.CartModel;
@@ -38,7 +39,7 @@ public class CartServiceImpl implements CartService {
     CartModel cartModel;
     List<CartItemModel> cartItemModels;
 
-    //get the list of all the items in the cart
+    /**get the list of all the items in the cart */
     @Override
     public List<CartItemModel> getAllCartItems() {
 
@@ -66,6 +67,8 @@ public class CartServiceImpl implements CartService {
                 }
             return cartItemModels;
             } else {
+                if(cartItemModels!=null && !cartItemModels.isEmpty())
+                    cartItemModels.removeAll(cartItemModels);
                 return null;
             }
         }catch (Exception e)
@@ -75,7 +78,7 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    //method that returns the cart object to be displayed to the user.
+    /**method that returns the cart object to be displayed to the user. */
     @Override
     public CartModel getCartModel() {
 
@@ -111,7 +114,7 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    /*
+    /**
      * Service layer, add product to cart.
      * Returns true if product was successfully added, else return false
      */
@@ -165,21 +168,112 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    /**
+     * updates the quantity of an item in the cart.
+     * returns the new subTotal as string.
+     *
+     * Null is returned if an exception occurs.
+     */
     @Override
-    public boolean updateCart(ProductModel productModel, int quantity)
+    public String updateCart(long productId, int quantity)
     {
+        logger.info("Updating cartItem. CartServiceImpl ----> updateCart ");
+
+        double subTotal = 0.0;
+        ProductBook productBook;
+        CartItem cartItem;
+        List<CartItem> cartItems;
+
         try {
-            return true;
+            productBook = productDao.findById(productId);
+            if(productBook != null)
+            {
+                cartItem = cartDao.findByProductBook(productBook);
+
+                if(cartItem != null)
+                {
+                    double price = quantity * productBook.getPrice();
+
+                    cartItem.setQuantity(quantity);
+                    cartItem.setTotalPrice(price);
+                    cartItem.setDate(new Date());
+
+                    cartDao.save(cartItem);
+
+                    //looping through all the items in the cart to find the new total cost.
+                    cartItems = cartDao.findAll();
+                    for (CartItem cartItemTemp : cartItems) {
+                        subTotal+= cartItemTemp.getTotalPrice();
+                    }
+
+                    //round to two decimal places
+                    subTotal = Double.parseDouble(decimalFormat.format(subTotal));
+
+                    return String.valueOf(subTotal);
+
+                } else {
+                    return null;
+                }
+            }
+            else
+                return null;
         }catch (Exception e) {
             logger.error("Exception in CartServiceImpl ---> updateCart ", e);
+            return null;
+        }
+    }
+
+    /**
+     * Service layer method to remove an item from the cart.
+     * The productid is passed as parameter.
+     * Returns a boolean value of True if success
+     * */
+    @Override
+    public boolean removeFromCart(long productId)
+    {
+        CartItem cartItem;
+        cartModel = new CartModel();
+        ProductBook productBook;
+        try {
+            productBook = productDao.findById(productId);
+            if(productBook != null)
+            {
+                //check if the product exist in the cart table
+                cartItem = cartDao.findByProductBook(productBook);
+
+                /*
+                 * if product already exist in the cart table, delete the entry from the table
+                 */
+                if(cartItem != null)
+                {
+                    cartDao.delete(cartItem);
+                    cartModel = getCartModel();
+                    return true;
+                } else
+                    return false;
+            } else
+                return false;
+
+        }catch(Exception e) {
+            logger.error("Exception in CartServiceImpl ---> removeFromCart ", e);
             return false;
         }
     }
 
+    /** Order confirmation.
+     * Pending
+     * */
     @Override
-    public boolean removeFromCart(ProductModel productModel)
+    public boolean confirmOrder()
     {
-        return false;
+        List<OrderDetails> orderDetails;
+        try {
+
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

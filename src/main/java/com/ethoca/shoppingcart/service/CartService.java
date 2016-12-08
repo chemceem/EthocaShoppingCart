@@ -13,7 +13,8 @@ public interface CartService {
 
     public List<CartItemModel> getAllCartItems();
     public CartModel getCartModel();
-    public boolean updateCart(ProductModel productModel, int quantity);
-    public boolean removeFromCart(ProductModel productModel);
+    public String updateCart(long productId, int quantity);
+    public boolean removeFromCart(long productId);
     public boolean addToCart(ProductModel productModel, int quantity);
+    public boolean confirmOrder();
 }

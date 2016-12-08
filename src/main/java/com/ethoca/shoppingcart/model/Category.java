@@ -7,5 +7,4 @@ public enum Category {
 
     FICTION,
     NONFICTION
-
 }
