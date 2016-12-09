@@ -2,6 +2,7 @@ package com.ethoca.shoppingcart.service.impl;
 
 import com.ethoca.shoppingcart.dao.UserDao;
 import com.ethoca.shoppingcart.domain.User;
+import com.ethoca.shoppingcart.model.Role;
 import com.ethoca.shoppingcart.model.UserSignUpForm;
 import com.ethoca.shoppingcart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userSignUpForm.getEmail());
         user.setPasswordHash(passwordEncoder.encode(userSignUpForm.getPassword()));
         user.setEnabled(true);
+        user.setRole(Role.USER);
 
         return userDao.save(user);
 

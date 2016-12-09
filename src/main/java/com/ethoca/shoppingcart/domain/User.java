@@ -1,6 +1,10 @@
 package com.ethoca.shoppingcart.domain;
 
+//import com.ethoca.shoppingcart.model.*;
+
+import com.ethoca.shoppingcart.model.Role;
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Chemcee. M. C on 20-11-2016.
@@ -22,6 +26,18 @@ public class User {
     private String passwordHash;
 
     private boolean isEnabled;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public Long getId() {
         return id;

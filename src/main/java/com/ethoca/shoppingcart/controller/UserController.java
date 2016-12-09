@@ -58,6 +58,7 @@ public class UserController {
         if(error != null)
         {
             model.addAttribute("error", "Wrong username/password");
+            System.out.println("Wrong username/password");
         }
         if(logout != null){
             model.addAttribute("message", "You have been logged out.");
