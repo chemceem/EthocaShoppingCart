@@ -1,5 +1,6 @@
 package com.ethoca.shoppingcart.model;
 
+import com.ethoca.shoppingcart.utils.PasswordMatches;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Size;
 /**
  * Created by Chemcee. M. C on 20-11-2016.
  */
+//@PasswordMatches
 public class UserSignUpForm {
 
     @NotNull
@@ -15,11 +17,11 @@ public class UserSignUpForm {
     private String email;
 
     @NotNull(message = "Password length must be greater than 6 characters.")
-    @Size(min=6)
+    @Size(min=6, message = "Password length must be greater than 6 characters.")
     private String password;
 
     @NotNull(message = "Password length must be greater than 6 characters.")
-    @Size(min=6)
+    @Size(min=6, message = "Password length must be greater than 6 characters.")
     private String confirmPassword;
 
     public String getEmail() {
