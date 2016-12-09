@@ -21,6 +21,9 @@ public class Order {
     @ManyToOne
     private UserAddress userAddress;
 
+    @ManyToOne
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -41,7 +44,5 @@ public class Order {
         return orderReferenceNumber;
     }
 
-    public void setOrderReferenceNumber(String orderReferenceNumber) {
-        this.orderReferenceNumber = orderReferenceNumber;
-    }
+    public void setOrderReferenceNumber(String orderReferenceNumber) { this.orderReferenceNumber = orderReferenceNumber; }
 }

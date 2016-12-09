@@ -2,16 +2,23 @@ package com.ethoca.shoppingcart.service.impl;
 
 import com.ethoca.shoppingcart.dao.CartDao;
 import com.ethoca.shoppingcart.dao.ProductDao;
+import com.ethoca.shoppingcart.dao.UserDao;
 import com.ethoca.shoppingcart.domain.CartItem;
 import com.ethoca.shoppingcart.domain.OrderDetails;
 import com.ethoca.shoppingcart.domain.ProductBook;
+
+import com.ethoca.shoppingcart.domain.User;
 import com.ethoca.shoppingcart.model.CartItemModel;
 import com.ethoca.shoppingcart.model.CartModel;
 import com.ethoca.shoppingcart.model.ProductModel;
 import com.ethoca.shoppingcart.service.CartService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.SecurityContextProvider;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -36,8 +43,12 @@ public class CartServiceImpl implements CartService {
     @Autowired
     ProductDao productDao;
 
+    @Autowired
+    UserDao userDao;
+
     CartModel cartModel;
     List<CartItemModel> cartItemModels;
+    User currentUser;
 
     /**get the list of all the items in the cart */
     @Override
@@ -130,8 +141,21 @@ public class CartServiceImpl implements CartService {
             productBook = productDao.findById(productModel.getId());
             if(productBook != null)
             {
-                //check if the product already exist in the cart table
-                cartItem = cartDao.findByProductBook(productBook);
+                currentUser = getCurrentUser();
+                if(currentUser != null)
+                {
+                    cartItem = cartDao.findByProductBookAndUser(productBook, currentUser);
+
+                    if(cartItem != null)
+                        cartItem.setUser(currentUser);
+                    else {
+                        cartItem = new CartItem();
+                        cartItem.setUser(currentUser);
+                    }
+                } else {
+                    //check if the product already exist in the cart table
+                    cartItem = cartDao.findByProductBook(productBook);
+                }
 
                 /*
                  * if product already exist in the cart table,
@@ -276,4 +300,17 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    private User getCurrentUser()
+    {
+        if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
+                !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken))
+        {
+            org.springframework.security.core.userdetails.User loggedInUser = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            User user = userDao.findByEmail(loggedInUser.getUsername());
+
+            return user;
+        } else
+            return null;
+    }
 }

@@ -49,11 +49,14 @@
         <h2 class="form-heading">Log in</h2>
         <div class="form-group col-lg-6 col-md-6">
 
-            <input name="username" type="text" class="form-control" placeholder="Username" autofocus="true"/>
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
+            <input name="username" type="text" class="form-control" placeholder="Email" autofocus="true" th:required="required"/>
+            <br />
+            <input name="password" type="password" class="form-control" placeholder="Password" th:required="required"/>
 
-            <p th:if="${error}" class="has-error">Wrong email/password combination</p>
-
+            <p th:if="${error}" >Wrong email/password combination.</p>
+            <p th:if="${message}" >You have been logged out.</p>
+            <br/>
+            <br />
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
         </div>
     </form>

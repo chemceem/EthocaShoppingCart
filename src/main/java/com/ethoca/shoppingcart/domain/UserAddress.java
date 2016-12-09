@@ -13,6 +13,8 @@ public class UserAddress
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private User user;
     private String firstName;
     private String lastName;
     private String addressLine1;
@@ -102,4 +104,8 @@ public class UserAddress
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public User getUser() {        return user;    }
+
+    public void setUser(User user) {        this.user = user;    }
 }

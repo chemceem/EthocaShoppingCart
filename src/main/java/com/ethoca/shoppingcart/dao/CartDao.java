@@ -2,6 +2,7 @@ package com.ethoca.shoppingcart.dao;
 
 import com.ethoca.shoppingcart.domain.CartItem;
 import com.ethoca.shoppingcart.domain.ProductBook;
+import com.ethoca.shoppingcart.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -12,6 +13,9 @@ import java.util.List;
 public interface CartDao extends CrudRepository<CartItem, Long>{
 
     public List<CartItem> findAll();
-    public  CartItem findByProductBook(ProductBook productBook);
+    public CartItem findByProductBook(ProductBook productBook);
+    public CartItem findByProductBookAndUser(ProductBook productBook, User user);
+
+
 
 }

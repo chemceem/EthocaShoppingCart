@@ -20,6 +20,9 @@ public class CartItem {
     private double totalPrice;
     private Date date;
 
+    @ManyToOne
+    private User user;
+
     public CartItem(){
 
     }
@@ -69,5 +72,13 @@ public class CartItem {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

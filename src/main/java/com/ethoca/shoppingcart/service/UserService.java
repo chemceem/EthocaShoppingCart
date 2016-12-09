@@ -10,5 +10,6 @@ public interface UserService {
 
     public boolean emailExist(String email);
     public User registerNewUserAccount(UserSignUpForm user);
+    public void autoLogin(String username, String password);
 
 }

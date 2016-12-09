@@ -35,8 +35,8 @@ public class CartController {
     @Autowired
     ProductService productService;
 
-    HttpServletRequest request;
-    HttpSession session;
+    /*HttpServletRequest request;
+    HttpSession session;*/
 
     /**
      * Returns the current cart of the user.
@@ -44,8 +44,8 @@ public class CartController {
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     private String returnCurrentCart(Model model)
     {
-        request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        session = request.getSession(true);
+        /*request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        session = request.getSession(true);*/
 
         try {
             cartModel = cartService.getCartModel();

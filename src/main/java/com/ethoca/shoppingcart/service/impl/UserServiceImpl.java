@@ -1,11 +1,19 @@
 package com.ethoca.shoppingcart.service.impl;
 
+
 import com.ethoca.shoppingcart.dao.UserDao;
 import com.ethoca.shoppingcart.domain.User;
 import com.ethoca.shoppingcart.model.Role;
 import com.ethoca.shoppingcart.model.UserSignUpForm;
 import com.ethoca.shoppingcart.service.UserService;
+import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +30,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    final static Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     @Override
     public boolean emailExist(String email) {
@@ -46,4 +62,23 @@ public class UserServiceImpl implements UserService {
         return userDao.save(user);
 
     }
+
+    /**
+       implementation of method that logins a user automatically after he/she registers with the system.
+     */
+    @Override
+    public void autoLogin(String username, String password)
+    {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+        if(usernamePasswordAuthenticationToken.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+            logger.info("Autologin --> "+username+" --> Successful");
+        }
+    }
+
 }

@@ -4,7 +4,7 @@ import com.ethoca.shoppingcart.domain.User;
 import com.ethoca.shoppingcart.model.UserSignUpForm;
 import com.ethoca.shoppingcart.service.UserService;
 import com.ethoca.shoppingcart.utils.UserValidator;
-import org.omg.CORBA.Request;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +47,9 @@ public class UserController {
         }
         else {
             user = userService.registerNewUserAccount(signUpForm);
+
+            //autologin after successful registration
+            userService.autoLogin(signUpForm.getEmail(), signUpForm.getConfirmPassword());
         }
 
         return "redirect:/";
@@ -58,7 +61,6 @@ public class UserController {
         if(error != null)
         {
             model.addAttribute("error", "Wrong username/password");
-            System.out.println("Wrong username/password");
         }
         if(logout != null){
             model.addAttribute("message", "You have been logged out.");

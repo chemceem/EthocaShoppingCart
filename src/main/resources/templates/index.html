@@ -20,8 +20,6 @@
 </head>
 
 <body>
-
-<body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -37,8 +35,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li sec:authorize="isAnonymous()"><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li sec:authorize="isAnonymous()"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 <li sec:authorize="isAuthenticated()"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 <li><a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span>Cart</a></li>
             </ul>
@@ -103,7 +101,7 @@
             <script id="entry-template" type="text/x-handlebars-template">
 
                 <div class="row">{{#each this}}<div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="card"> <img src={{this.thumbnailUrl}}alt="" class="card-img-top img-fluid"/>
+                    <div class="card"> <img src='{{this.thumbnailUrl}}' alt="" class="card-img-top img-fluid"/>
                         <h3><a href='../products/{{this.id}}' class="card-title">{{this.title}}</a></h3>
                         <h5>{{this.author}}</h5> <h5 class="card-">${{this.price}}</h5>
                         <br/><br/>
@@ -127,16 +125,15 @@
     </footer>
 </div>
 <script>
-    //ajax to load product content
+
+    //<![CDATA[
     var request = new XMLHttpRequest();
     var data;
     request.open('GET', 'http://localhost:8081/products/all', true);
-    request.onreadystatechange = function(e) {
+    request.onreadystatechange = function() {
         if (this.readyState === 4) {
-            if (this.status >= 200 && this.status < 400) {
-                // Success!
+            if (this.status >= 200) {
                 data = JSON.parse(this.responseText);
-                //console.log(data);
                 var source = $("#entry-template").html();
                 var template = Handlebars.compile(source);
                 $('#books').append(template(data));
@@ -169,7 +166,7 @@
     ;
     request.send();
     request = null ;
+    //]]>
 </script>
 </body>
-
 </html>
